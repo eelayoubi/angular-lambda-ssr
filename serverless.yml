@@ -1,0 +1,55 @@
+service: angular-lambda-ssr
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  memorySize: 192
+  timeout: 10
+  region: us-east-1
+
+package:
+  exclude:
+    - ./**
+  include:
+    - "node_modules/html-minifier/**"
+    - "node_modules/commander/**"
+    - "node_modules/html-minifier/**"
+    - "node_modules/upper-case/**"
+    - "node_modules/clean-css/**"
+    - "node_modules/source-map/**"
+    - "node_modules/lower-case/**"
+    - "node_modules/no-case/**"
+    - "node_modules/he/**"
+    - "node_modules/param-case/**"
+    - "node_modules/relateurl/**"
+    - "node_modules/uglify-js/**"
+    - "node_modules/serverless-http/**"
+    - "dist/**"
+    - "lambda.js"
+
+functions:
+  ssr-origin-req:
+    handler: lambda.handler
+    role: !GetAtt LambdaEdgeFunctionRole.Arn
+
+resources:
+  Resources:
+    # the role that the lambda function will assume. Also notice the edgelambda in the principal part
+    LambdaEdgeFunctionRole:
+      Type: "AWS::IAM::Role"
+      Properties:
+          Path: "/"
+          ManagedPolicyArns:
+              - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+          AssumeRolePolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Sid: "AllowLambdaServiceToAssumeRole"
+                Effect: "Allow"
+                Action: 
+                  - "sts:AssumeRole"
+                Principal:
+                  Service: 
+                    - "lambda.amazonaws.com"
+                    - "edgelambda.amazonaws.com"

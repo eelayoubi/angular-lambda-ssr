@@ -1,0 +1,15 @@
+<div *ngIf="animal">
+  <fieldset>
+    <legend>Details</legend><br />
+    <label for="name">Name:</label>
+    <span> {{ animal.name }}</span><br /><br />
+    <label for="age">Age:</label>
+    <span> {{ animal.age }}</span><br /><br />
+    <label for="address">Adders:</label>
+    <span> {{ animal.address.street }} {{ animal.address.city }} {{ animal.address.zip }}</span><br /><br />
+    <label for="charac">Characteristics:</label>
+    <ul *ngFor="let charac of animal.characteristics;">
+      <li>{{charac}}</li>
+    </ul>
+  </fieldset>
+</div>

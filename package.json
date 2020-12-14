@@ -7,7 +7,12 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "dev:ssr": "ng run angular-lambda-ssr:serve-ssr",
+    "serve:ssr": "node dist/angular-lambda-ssr/server/main.js",
+    "build:ssr": "ng build --prod && ng run angular-lambda-ssr:server:production",
+    "prerender": "ng run angular-lambda-ssr:prerender",
+    "build:sls": "ng build --prod && ng run angular-lambda-ssr:serverless:production"
   },
   "private": true,
   "dependencies": {
@@ -18,8 +23,13 @@
     "@angular/forms": "~11.0.4",
     "@angular/platform-browser": "~11.0.4",
     "@angular/platform-browser-dynamic": "~11.0.4",
+    "@angular/platform-server": "~11.0.4",
     "@angular/router": "~11.0.4",
+    "@nguniversal/express-engine": "^11.0.1",
+    "express": "^4.15.2",
+    "html-minifier": "^4.0.0",
     "rxjs": "~6.6.0",
+    "serverless-http": "eelayoubi/serverless-http",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },
@@ -27,6 +37,8 @@
     "@angular-devkit/build-angular": "~0.1100.4",
     "@angular/cli": "~11.0.4",
     "@angular/compiler-cli": "~11.0.4",
+    "@nguniversal/builders": "^11.0.1",
+    "@types/express": "^4.17.0",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^12.11.1",
     "codelyzer": "^6.0.0",

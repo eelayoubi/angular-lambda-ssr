@@ -1,0 +1,83 @@
+service: angular-lambda-ssr-distribution
+
+provider:
+  name: aws
+  region: us-east-1
+
+resources:
+  Resources:
+   
+    # the origin Identity that we will use in S3, to only allow a specific cloudfront distribution
+    # access to the S3 content, to keep S3 private
+    CloudFrontIdentity:
+      Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+      Properties:
+        CloudFrontOriginAccessIdentityConfig:
+          Comment: cf-accessidentity
+
+    # the cloudfront distribution
+    CloudFrontDistribution:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          DefaultCacheBehavior:
+            ForwardedValues:
+              QueryString: true
+              Cookies:
+                Forward: none
+            TargetOriginId: S3
+            Compress: true
+            ViewerProtocolPolicy: redirect-to-https
+            MaxTTL: 86400
+            DefaultTTL: 86400
+            MinTTL: 86400
+          DefaultRootObject: index.html
+          HttpVersion: http2
+          Enabled: true
+          IPV6Enabled: true
+          PriceClass: PriceClass_All
+          Origins:
+            - DomainName: !Join 
+              - ''
+              - - !Ref MyS3Bucket
+                - .s3.amazonaws.com
+              S3OriginConfig:
+                OriginAccessIdentity: !Sub 'origin-access-identity/cloudfront/${CloudFrontIdentity}'
+              Id: S3
+          CustomErrorResponses:
+            - ErrorCode: 404
+              ResponseCode: 200
+              ResponsePagePath: /index.html
+              ErrorCachingMinTTL: 300
+            - ErrorCode: 403
+              ResponseCode: 200
+              ResponsePagePath: /index.html
+              ErrorCachingMinTTL: 300
+
+    # the S3 bucket we will use to upload our application (the dist folder)
+    MyS3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: replacewithyourbucketname
+
+    # the policy that grants access to S3 to only the cloudfront origin identity 
+    MyS3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: !Ref MyS3Bucket
+        PolicyDocument:
+          Statement:
+            Effect: "Allow"
+            Principal:
+              AWS: !Sub "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontIdentity}"
+            Action: "s3:GetObject"
+            Resource: !Join 
+              - ''
+              - - 'arn:aws:s3:::'
+                - !Ref MyS3Bucket
+                - /*
+
+  Outputs:
+    CloudFrontEndpoint:
+      Description: Endpoint for Cloudfront Distribution
+      Value: !GetAtt CloudFrontDistribution.DomainName

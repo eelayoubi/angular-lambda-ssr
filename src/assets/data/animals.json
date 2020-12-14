@@ -1,0 +1,95 @@
+[
+    {
+        "id": 1,
+        "name": "Oliver",
+        "type": "cat",
+        "age": "12",
+        "address": {
+            "street": "2 dam",
+            "city": "Amsterdam",
+            "zip": "1012"
+        },
+        "characteristics": [
+            "friendly",
+            "playful",
+            "selfish"
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Leo",
+        "type": "cat",
+        "age": "1",
+        "address": {
+            "street": "26 ",
+            "city": "Haarlem",
+            "zip": "2002"
+        },
+        "characteristics": [
+            "friendly",
+            "quite",
+            "cuddly"
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Simba",
+        "type": "cat",
+        "age": "4",
+        "address": {
+            "street": "123 markt",
+            "city": "Amsterdam",
+            "zip": "1003"
+        },
+        "characteristics": [
+            "shy"
+        ]
+    },
+    {
+        "id": 4,
+        "name": "Max",
+        "type": "dog",
+        "age": "13",
+        "address": {
+            "street": "12 gracht",
+            "city": "Amsterdam",
+            "zip": "1017"
+        },
+        "characteristics": [
+            "friendly",
+            "Affectionate with Family",
+            "selfish"
+        ]
+    },
+    {
+        "id": 5,
+        "name": "Milo",
+        "type": "dog",
+        "age": "15",
+        "address": {
+            "street": "43 kade",
+            "city": "Amsterdam",
+            "zip": "1345"
+        },
+        "characteristics": [
+            "Kid-friendly",
+            "playful"
+        ]
+    },
+    {
+        "id": 6,
+        "name": "Oscar",
+        "type": "dog",
+        "age": "2",
+        "address": {
+            "street": "34 haven",
+            "city": "Amsterdam",
+            "zip": "1057"
+        },
+        "characteristics": [
+            "friendly",
+            "playful",
+            "Love to eat"
+        ]
+    }
+]
